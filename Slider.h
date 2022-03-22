@@ -6,11 +6,15 @@
 class Slider : public sf::Drawable
 {
 public:
+	~Slider() { delete toLoad; };
 	Slider() :Slider(10, 10, 150, 30, 10, sf::Color::Black, sf::Color::White) {}
 
-	Slider(int px, int py, int sx, int sy) : Slider(px, py, sx, sy, sy / 6, sf::Color::Black, sf::Color::White) {}
+	//Slider(int px, int py, int sx, int sy) : Slider(px, py, sx, sy, sy / 6, sf::Color::Black, sf::Color::White) {}
 
-	Slider(int px, int py, int sx, int sy, sf::Color begColor, sf::Color endColor) : Slider(px, py, sx, sy, sy / 6, begColor, endColor) {}
+	Slider(int px, int py, int sx, int sy, sf::Color begColor= sf::Color::Black, sf::Color endColor= sf::Color::White) : Slider(px, py, sx, sy, sy / 6, begColor, endColor) {}
+
+	Slider(sf::Vector2i position, sf::Vector2i size = sf::Vector2i(100, 20), sf::Color begColor = sf::Color::Black, sf::Color endColor = sf::Color::White)
+		: Slider(position.x, position.y, size.x, size.y, begColor, endColor)	{};
 
 	Slider(int px, int py, int sx, int sy, int lT, sf::Color begColor, sf::Color endColor)
 	{
@@ -39,21 +43,12 @@ public:
 		line.setOutlineThickness(1.0f);
 		line.setPosition(sf::Vector2f(position.x, position.y + (sy - lineThick) / 2));
 
-		rainbow = sf::VertexArray(sf::Quads, 4);
-		rainbow[0].position = sf::Vector2f(px, py + (sy - lineThick) / 2);
-		rainbow[1].position = sf::Vector2f(px + sx, py + (sy - lineThick) / 2);
-		rainbow[2].position = sf::Vector2f(px + sx, py + (sy - lineThick) / 2 + lineThick);
-		rainbow[3].position = sf::Vector2f(px, py + (sy - lineThick) / 2 + lineThick);
-
-		rainbow[0].color = begColor;
-		rainbow[1].color = endColor;
-		rainbow[2].color = endColor;
-		rainbow[3].color = begColor;
+		vertexToRectangle(px, py, sx, sy, lT, begColor, endColor);
+		
 	}
 
 	sf::RectangleShape rect;
 	sf::RectangleShape line;
-	sf::VertexArray rainbow;
 	//sf::RectangleShape rect;
 
 	sf::Vector2f position;
@@ -79,10 +74,10 @@ public:
 		lineThick = v;
 		line.setSize(sf::Vector2f(size.x, lineThick));
 		line.setPosition(sf::Vector2f(position.x, position.y + (size.y - lineThick) / 2));
-		rainbow[0].position = sf::Vector2f(position.x, position.y + (size.y - lineThick) / 2);
-		rainbow[1].position = sf::Vector2f(position.x + size.x, position.y + (size.y - lineThick) / 2);
-		rainbow[2].position = sf::Vector2f(position.x + size.x, position.y + (size.y - lineThick) / 2 + lineThick);
-		rainbow[3].position = sf::Vector2f(position.x, position.y + (size.y - lineThick) / 2 + lineThick);
+		//rainbow[0].position = sf::Vector2f(position.x, position.y + (size.y - lineThick) / 2);
+		//rainbow[1].position = sf::Vector2f(position.x + size.x, position.y + (size.y - lineThick) / 2);
+		//rainbow[2].position = sf::Vector2f(position.x + size.x, position.y + (size.y - lineThick) / 2 + lineThick);
+		//rainbow[3].position = sf::Vector2f(position.x, position.y + (size.y - lineThick) / 2 + lineThick);
 	}
 	void setRectWidth(int v)
 	{
@@ -125,8 +120,43 @@ public:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		target.draw(line);
-		target.draw(rainbow);
+		//target.draw(rainbow);
 		target.draw(rect);
 	}
+	private:
+		sf::Texture* toLoad;
+		/// <summary>
+		/// creat texter using color and updating it to rectangle
+		/// </summary>
+		/// <param name="px"></param>
+		/// <param name="py"></param>
+		/// <param name="sx"></param>
+		/// <param name="sy"></param>
+		/// <param name="lT"></param>
+		/// <param name="begColor">left side color</param>
+		/// <param name="endColor">right side color</param>
+		void vertexToRectangle(int px, int py, int sx, int sy, int lT, sf::Color begColor, sf::Color endColor)
+		{	
+			sf::VertexArray rainbow;
+
+			rainbow = sf::VertexArray(sf::Quads, 4);
+			rainbow[0].position = sf::Vector2f(px, py + (sy - lineThick) / 2);
+			rainbow[1].position = sf::Vector2f(px + sx, py + (sy - lineThick) / 2);
+			rainbow[2].position = sf::Vector2f(px + sx, py + (sy - lineThick) / 2 + lineThick);
+			rainbow[3].position = sf::Vector2f(px, py + (sy - lineThick) / 2 + lineThick);
+
+			rainbow[0].color = begColor;
+			rainbow[1].color = endColor;
+			rainbow[2].color = endColor;
+			rainbow[3].color = begColor;
+
+			toLoad = new sf::Texture;
+			sf::RenderTexture texture_r;
+			texture_r.create(size.x,size.y);//seting size
+			toLoad->create(size.x, size.y);
+			texture_r.draw(rainbow);
+			toLoad->update(texture_r.getTexture());
+			rect.setTexture(toLoad);
+		}
 };
 
