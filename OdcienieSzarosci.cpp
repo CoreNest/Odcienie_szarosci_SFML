@@ -1,33 +1,51 @@
 // OdcienieSzarosci.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
-#include "pch.h"
+
+#define SFML_Proj
+
+#include <imgui.h>
+#include "imgui-SFML.h"
+
+#include <SFML/Graphics/CircleShape.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/System/Clock.hpp>
+#include <SFML/Window/Event.hpp>
+
+#include "UserInterFace.h"
 
 
-#include <SFML/Graphics.hpp>
+int main() {
+    
+    sf::RenderWindow window(sf::VideoMode(800, 600), "ImGui + SFML = <3");
+    window.setFramerateLimit(60);
+    ImGui::SFML::Init(window);
 
-int main()
-{
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
 
-    while (window.isOpen())
-    {
+    sf::Clock deltaClock;
+    while (window.isOpen()) {
         sf::Event event;
-        while (window.pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
+        while (window.pollEvent(event)) {
+            ImGui::SFML::ProcessEvent(window, event);
+
+            if (event.type == sf::Event::Closed) {
                 window.close();
+            }
         }
+        ImGui::SFML::Update(window, deltaClock.restart());
+
+        UserInterFace::RenderUi();
+
 
         window.clear();
         window.draw(shape);
+        ImGui::SFML::Render(window);
         window.display();
     }
 
-    return 0;
+    ImGui::SFML::Shutdown();
 }
-
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu
 
