@@ -12,10 +12,10 @@
 #include <SFML/Window/Event.hpp>
 
 #include "UserInterFace.h"
-
+#include "ParalerWindow.h"
 
 int main() {
-    
+    ParalerWindow win;
     sf::RenderWindow window(sf::VideoMode(800, 600), "ImGui + SFML = <3");
     window.setFramerateLimit(60);
     ImGui::SFML::Init(window);
@@ -36,6 +36,28 @@ int main() {
         ImGui::SFML::Update(window, deltaClock.restart());
 
         UserInterFace::RenderUi();
+       // win.start();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
         window.clear();

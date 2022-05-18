@@ -6,6 +6,6 @@
 class UserInterFace
 {
 public:
-	static void RenderUi();
+	static bool RenderUi(Settings &setting= setting);
 };
 
