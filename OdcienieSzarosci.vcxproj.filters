@@ -51,6 +51,9 @@
     <ClCompile Include="Module.ixx">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="colorConverter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Slider.h">
@@ -63,6 +66,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ParalerWindow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="colorConverter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
