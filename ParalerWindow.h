@@ -8,30 +8,58 @@
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window/Event.hpp>
 #include <thread>
-
+#include <iostream>
 #include "Setting.h"
 
 class ParalerWindow
 {
 public:
      void start() {
-        if (setting.preView && setting.multiWin)
+         
+        if (!started&&setting.preView && setting.multiWin)
         {
-            *t1 = std::thread(&ParalerWindow::loop,this);
+            if(t1.joinable())
+            t1.join();
+            t1 = std::thread(&ParalerWindow::loop,this);
+            
+            started = 1;
+
 
         }
     }
      void loop(){      
         sf::RenderWindow window(sf::VideoMode(500, 500), "preView");
         window.setFramerateLimit(60); 
-        while (setting.preView && setting.multiWin) {
+        while (setting.preView && setting.multiWin && window.isOpen()) {
+            
+            std::cout << t1.get_id()<<std::endl;
+            sf::Event event;
+            while (window.pollEvent(event)) {
+               
+
+                if (event.type == sf::Event::Closed) {
+                    window.close();
+                    started = 0;
+                    setting.multiWin = 0;
+                }
+            }
             window.clear();
             //window.draw();
-           
+
+            //  Here print pre vie picture
+
+
+            //
             window.display();
         }
-        ImGui::SFML::Shutdown();
+        started = 0;
     }
-     std::thread* t1;     
+     void checkTerminate()
+     {
+         if (t1.joinable())
+             t1.join();
+     }
+     std::thread t1;    
+     bool started{};
 
 };

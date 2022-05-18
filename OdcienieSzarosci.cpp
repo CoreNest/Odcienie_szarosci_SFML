@@ -36,37 +36,21 @@ int main() {
         ImGui::SFML::Update(window, deltaClock.restart());
 
         UserInterFace::RenderUi();
-       // win.start();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        
+        win.start();
 
 
 
         window.clear();
         window.draw(shape);
+        if (!setting.multiWin);// pre view mode per this win draw img with pre vie
+
         ImGui::SFML::Render(window);
         window.display();
     }
 
     ImGui::SFML::Shutdown();
+    win.checkTerminate();
 }
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu
 // Debug program: F5 or Debug > Start Debugging menu
