@@ -6,6 +6,6 @@
 class UserInterFace
 {
 public:
-	static bool RenderUi(Settings &setting= setting);
+	static bool RenderUi(Settings &setting= setting, ExpandSeting &expandSeting = expandSeting);
 };
 

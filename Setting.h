@@ -16,7 +16,7 @@ struct Settings
     bool expand;
     bool preView;
     bool multiWin;
-    float colBright[3] ;
+    float colBright[3] = {1,1,1};
     float colDark[3];
 
     std::string getSciezka(){
@@ -28,6 +28,6 @@ struct Settings
 
 struct ExpandSeting
 {
-    float Ratio;
-    float saveColor[3];
+    float Ratio=1;
+    float saveColor[3] = {1,0,0};
 }static expandSeting;

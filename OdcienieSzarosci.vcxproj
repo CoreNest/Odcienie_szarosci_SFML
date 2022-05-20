@@ -125,14 +125,16 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>
       </PrecompiledHeaderFile>
-      <Optimization>MinSpace</Optimization>
-      <FavorSizeOrSpeed>Size</FavorSizeOrSpeed>
+      <Optimization>Disabled</Optimization>
+      <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <AdditionalIncludeDirectories>D:\Programownaie\SFML-2.5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>sfml-graphics-s-d.lib;sfml-window-s-d.lib;sfml-system-s-d.lib</AdditionalDependencies>
+      <AdditionalDependencies>sfml-graphics-s-d.lib;sfml-window-d.lib;sfml-system-d.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>D:\Programownaie\SFML-2.5.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
@@ -166,15 +168,14 @@
     <ClCompile Include="..\..\..\..\imgui\imgui_tables.cpp" />
     <ClCompile Include="..\..\..\..\imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\..\..\..\imgui\misc\cpp\imgui_stdlib.cpp" />
-    <ClCompile Include="colorConverter.cpp" />
-    <ClCompile Include="Module.ixx" />
+    <ClCompile Include="ColorConverter.cpp" />
     <ClCompile Include="OdcienieSzarosci.cpp" />
     <ClCompile Include="ParalerWindow.cpp" />
     <ClCompile Include="Setting.cpp" />
     <ClCompile Include="UserInterFace.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="colorConverter.h" />
+    <ClInclude Include="ColorConverter.h" />
     <ClInclude Include="ParalerWindow.h" />
     <ClInclude Include="Setting.h" />
     <ClInclude Include="Slider.h" />

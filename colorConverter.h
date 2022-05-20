@@ -2,23 +2,35 @@
 
 #include <SFML/Graphics.hpp>
 
-class colorConverter
+#include "Setting.h"
+
+class ColorConverter
 {
 public:
-	colorConverter(float rW, float gW, float bW);
-	colorConverter(float rW, float gW, float bW, sf::Color keepCol);
-	colorConverter(float rW, float gW, float bW, sf::Color loCol, sf::Color upCol);
-	colorConverter(float rW, float gW, float bW, sf::Color loCol, sf::Color upCol, sf::Color keepCol);
+	ColorConverter();
+	ColorConverter(float rW, float gW, float bW);
+	ColorConverter(float rW, float gW, float bW, float* keepCol, float rat);
+	ColorConverter(float rW, float gW, float bW, float* loCol, float* upCol);
+	ColorConverter(float rW, float gW, float bW, float* loCol, float* upCol, float* keepCol, float rat);
 
-	sf::Color convertToLInear(sf::Color);
+	void setBiChrome(float* loCol, float* upCol);
+	void setKeep(float* kpCol, float rat);
+
+	sf::Color& GetLinear(sf::Color&);
+	sf::Color convertToLinear(sf::Color);
+	sf::Color operator()(sf::Color col) {  return convertToLinear(col); }
+
+	static bool iterator(sf::Image& org, sf::Image& output, Settings& st, ExpandSeting& exSt);
+
 private:
 	float _redWeight;
 	float _greenWeight;
 	float _blueWeight;
-	bool _ishue;
-	sf::Color _loColor;
-	sf::Color _upColor;
+	bool _isBiCh;
+	float* _loColor;
+	float* _upColor;
 	bool _isExtend;
-	sf::Color _keeptColor;
+	float* _keeptColor;
+	float _keepRatio;
 };
 
