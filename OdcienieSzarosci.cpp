@@ -69,8 +69,7 @@ int main() {
         
         win.start();
 
-        ColorConverter::iterator(imgPrev, imgPrevGray, setting, expandSeting);//transforming colors
-        expandSeting;
+        ColorConverter::iterator(imgPrev, imgPrevGray, setting, expandSeting);//transforming 
 
         imgTex.loadFromImage(imgPrevGray);
         imgSprite.setTexture(imgTex);
