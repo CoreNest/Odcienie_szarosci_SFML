@@ -16,7 +16,7 @@ public:
 	void setBiChrome(float* loCol, float* upCol);
 	void setKeep(float* kpCol, float rat);
 
-	sf::Color& GetLinear(sf::Color&);
+	//sf::Color& GetLinear(sf::Color&);
 	sf::Color convertToLinear(sf::Color);
 	sf::Color operator()(sf::Color col) {  return convertToLinear(col); }
 

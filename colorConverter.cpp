@@ -1,5 +1,7 @@
 #include "colorConverter.h"
 
+#define M_PI 3.14159265358979323846
+
 bool ColorConverter::iterator(sf::Image& org, sf::Image& output, Settings& st, ExpandSeting& exSt)
 {
 	if (st.preView)
@@ -10,12 +12,12 @@ bool ColorConverter::iterator(sf::Image& org, sf::Image& output, Settings& st, E
 
 		if (st.expand)
 		{
-			float tmp[] = { 0,1,0 };
 			colorConverter.setKeep(exSt.saveColor,exSt.Ratio);
 		}
 
-		for (unsigned int i{}; i < org.getSize().y; i++)
-			for (unsigned int j{}; j < org.getSize().x; j++)
+#pragma omp parallel for
+		for (int i{}; i < org.getSize().y; i++)
+			for (int j{}; j < org.getSize().x; j++)
 				output.setPixel(j, i, colorConverter(org.getPixel(j, i)));
 
 		return true;
@@ -67,23 +69,32 @@ void ColorConverter::setKeep(float* kpCol, float rat)
 }
 
 
-sf::Color& ColorConverter::GetLinear(sf::Color& inColor)
+/*sf::Color& ColorConverter::GetLinear(sf::Color& inColor)
 {
 	int linearCol = (inColor.r * _redWeight + inColor.g * _greenWeight + inColor.b * _blueWeight) / (_redWeight + _greenWeight + _blueWeight);
 	inColor.r = linearCol;
 	inColor.g = linearCol;
 	inColor.b = linearCol;
 	return inColor;
-}
+}*/
 
 inline int biVal(int ln, float& up, float& lo)
 {
 	return ln * up + lo * (255 - ln);
 }
 
-inline int keepVal(int ln, uint8_t& inC, float& kpV, float& rV) // NEED A LITTLE BIT OF ADDITIONAL WORK !!!!!!!!!!
+inline float powerer(float _x)
 {
-	return ln + (kpV * (inC - ln)) * rV;
+	return _x * _x * _x * _x;
+}
+
+inline int keepVal(int ln, uint8_t& inC, float& kpV, float& rV)
+{
+	//return ln + (kpV * (inC - ln)) * rV; // ln <- 255 * kpV
+	//return inC - abs(inC - kpV*255) * ((inC - ln) / 255.);
+	if ((int)(kpV * 255) == inC) return inC;
+	if (rV == 0) return ln;
+	return inRange(inC + atan(abs(inC - kpV * 255) * 5 * powerer(1 - rV)) * (ln - inC) / (M_PI / 2) * 1.01);
 }
 
 sf::Color ColorConverter::convertToLinear(sf::Color inColor)
@@ -108,6 +119,7 @@ sf::Color ColorConverter::convertToLinear(sf::Color inColor)
 			keepVal(linearCol, inColor.b, _keeptColor[2], _keepRatio)
 		);
 	}
+	// if Bichromatic and Extended
 	return sf::Color(
 		keepVal(biVal(linearCol, _upColor[0], _loColor[0]), inColor.r, _keeptColor[0], _keepRatio),
 		keepVal(biVal(linearCol, _upColor[1], _loColor[1]), inColor.g, _keeptColor[1], _keepRatio),
