@@ -28,6 +28,6 @@ struct Settings
 
 struct ExpandSeting
 {
-    float Ratio=1;
-    float saveColor[3] = {1,0,0};
+    float Ratio=0.73;
+    float saveColor[3] = {0.161,0.698,0.1098};
 }static expandSeting;
