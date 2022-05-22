@@ -25,6 +25,11 @@ int main() {
     window.setFramerateLimit(60);
     ImGui::SFML::Init(window);
 
+    /*sf::Clock clock;
+    sf::Time time = sf::Time::Zero;
+    unsigned int FPS = 0, frame_counter = 0;
+    sf::Text fps_text;*/ //fps counter part 1 (part 2 also must be uncommented to work)
+
     //examples of shapes (***CAN BE DELEATED***)
     /*sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);*/
@@ -79,6 +84,15 @@ int main() {
         //window.draw(shape);   //example shapes
         //window.draw(circle4);
         if (!setting.multiWin);// pre view mode per this win draw img with pre vie
+
+        /*if (clock.getElapsedTime().asSeconds() >= 1.0f)
+        {
+            FPS = (unsigned int)((float)frame_counter / clock.getElapsedTime().asSeconds());
+            clock.restart();
+            frame_counter = 0;
+            window.setTitle(std::to_string(FPS));
+        }
+        frame_counter++;*/ //fps counter part 2 (part 1 also must be uncommented to work)
 
         ImGui::SFML::Render(window);
         window.display();
