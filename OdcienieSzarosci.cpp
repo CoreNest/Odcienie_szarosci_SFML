@@ -49,7 +49,7 @@ int main() {
 
     //allocation of Img, Texture, Sprite and ResultImg
     sf::Image imgPrev;
-    imgPrev.loadFromFile("exImage_res.png");//*************(TO DO) getting std::string of location of file
+    imgPrev.loadFromFile("zdj1.png");//*************(TO DO) getting std::string of location of file
 
     sf::Texture imgTex;
     sf::Sprite imgSprite;
@@ -70,14 +70,15 @@ int main() {
         }
         ImGui::SFML::Update(window, deltaClock.restart());
 
-        UserInterFace::RenderUi();
-        
-        win.start();
+        if (UserInterFace::RenderUi()) {
 
-        ColorConverter::iterator(imgPrev, imgPrevGray, setting, expandSeting);//transforming 
+            win.start();
 
-        imgTex.loadFromImage(imgPrevGray);
-        imgSprite.setTexture(imgTex);
+            ColorConverter::iterator(imgPrev, imgPrevGray, setting, expandSeting);//transforming 
+
+            imgTex.loadFromImage(imgPrevGray);
+            imgSprite.setTexture(imgTex);
+        }
 
         window.clear();
         window.draw(imgSprite);

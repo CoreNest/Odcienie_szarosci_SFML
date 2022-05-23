@@ -1,6 +1,6 @@
-R:1
+R:0.925
 B:1
 G:1
-hue:1
-Mixed ratio1
-color00007FF60CD441B4
+hue:0
+Mixed ratio0.73
+color00007FF7125CEC94
