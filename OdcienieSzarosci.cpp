@@ -98,10 +98,10 @@ int main() {
                 imgLoader::loaded = 0;
                 imgPrevGray=imgPrev = cutingImg(imgLoader::img);
 
-                window.setSize(imgLoader::img.getSize());
+                //window.setSize(imgLoader::img.getSize());
                 baseLookText.loadFromImage(imgLoader::img);
                 baseLookSprite.setTexture(baseLookText);
-                
+                baseLookSprite.setScale(sf::Vector2f(800./ imgLoader::img.getSize().x, 600. / imgLoader::img.getSize().y));
                 forConverter = 1;
             } 
             if (imgPrevGray.getSize() != sf::Vector2u(0, 0)) {
