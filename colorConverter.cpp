@@ -4,7 +4,6 @@
 
 bool ColorConverter::iterator(sf::Image& org, sf::Image& output, Settings& st, ExpandSeting& exSt)
 {
-	if (st.preView)
 	{
 		ColorConverter colorConverter(st.RedRatio, st.GreanRatio, st.BlueRatio); //Initializing functor //??Grean
 		if (st.hue)
@@ -22,7 +21,6 @@ bool ColorConverter::iterator(sf::Image& org, sf::Image& output, Settings& st, E
 
 		return true;
 	}
-	output = org;
 	return false;
 }
 

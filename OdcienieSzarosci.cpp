@@ -61,7 +61,7 @@ int main() {
     //!!dont work!!("yet")//imgSprite.scale(sf::Vector2f(window.getSize().x / imgPrev.getSize().x, window.getSize().y / imgPrev.getSize().y));
 
     sf::Image imgPrevGray;
-    imgPrevGray.create(imgPrev.getSize().x, imgPrev.getSize().y);
+    
 
     sf::Clock deltaClock;
     while (window.isOpen()) {
@@ -75,22 +75,23 @@ int main() {
         }
         ImGui::SFML::Update(window, deltaClock.restart());
 
-        if (UserInterFace::RenderUi()) {
-
-            
+        if (UserInterFace::RenderUi()) {        
                 
             
             if (imgLoader::loaded) {
                 imgLoader::loaded = 0;
-                imgPrev = sf::Image(imgLoader::img);
+                imgPrevGray=imgPrev = sf::Image(imgLoader::img);
+                
+                
                 baseLookText.loadFromImage(imgPrev);
                 baseLookSprite.setTexture(baseLookText);
                 forConverter = 1;
             } 
-                 ColorConverter::iterator(imgPrev, imgPrevGray, setting, expandSeting);//transforming 
-
+            if (imgPrevGray.getSize() != sf::Vector2u(0, 0)) {
+                ColorConverter::iterator(imgPrev, imgPrevGray, setting, expandSeting);//transforming 
                 imgTex.loadFromImage(imgPrevGray);
                 imgSprite.setTexture(imgTex);
+            }
             
         }
 
