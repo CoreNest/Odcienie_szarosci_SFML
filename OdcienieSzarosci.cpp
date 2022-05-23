@@ -18,9 +18,12 @@
 #include "UserInterFace.h"
 #include "ParalerWindow.h"
 #include "ColorConverter.h"
+#include "ImgLoader.h"
+
 
 int main() {
     ParalerWindow win;
+    bool forConverter{};
     sf::RenderWindow window(sf::VideoMode(800, 600), "ImGui + SFML = <3");
     window.setFramerateLimit(60);
     ImGui::SFML::Init(window);
@@ -49,10 +52,12 @@ int main() {
 
     //allocation of Img, Texture, Sprite and ResultImg
     sf::Image imgPrev;
-    imgPrev.loadFromFile("zdj1.png");//*************(TO DO) getting std::string of location of file
+    //imgPrev.loadFromFile("zdj1.png");//*************(TO DO) getting std::string of location of file
 
     sf::Texture imgTex;
     sf::Sprite imgSprite;
+    sf::Texture baseLookText;
+    sf::Sprite baseLookSprite;
     //!!dont work!!("yet")//imgSprite.scale(sf::Vector2f(window.getSize().x / imgPrev.getSize().x, window.getSize().y / imgPrev.getSize().y));
 
     sf::Image imgPrevGray;
@@ -72,19 +77,33 @@ int main() {
 
         if (UserInterFace::RenderUi()) {
 
-            win.start();
+            
+                
+            
+            if (imgLoader::loaded) {
+                imgLoader::loaded = 0;
+                imgPrev = sf::Image(imgLoader::img);
+                baseLookText.loadFromImage(imgPrev);
+                baseLookSprite.setTexture(baseLookText);
+                forConverter = 1;
+            } 
+                 ColorConverter::iterator(imgPrev, imgPrevGray, setting, expandSeting);//transforming 
 
-            ColorConverter::iterator(imgPrev, imgPrevGray, setting, expandSeting);//transforming 
-
-            imgTex.loadFromImage(imgPrevGray);
-            imgSprite.setTexture(imgTex);
+                imgTex.loadFromImage(imgPrevGray);
+                imgSprite.setTexture(imgTex);
+            
         }
 
         window.clear();
-        window.draw(imgSprite);
-        //window.draw(shape);   //example shapes
+        
+        {
+            if (setting.preView)
+                window.draw(imgSprite);
+            else
+                window.draw(baseLookSprite);
+        }
         //window.draw(circle4);
-        if (!setting.multiWin);// pre view mode per this win draw img with pre vie
+        // pre view mode per this win draw img with pre vie
 
         /*if (clock.getElapsedTime().asSeconds() >= 1.0f)
         {
@@ -102,13 +121,4 @@ int main() {
     ImGui::SFML::Shutdown();
     win.checkTerminate();
 }
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file

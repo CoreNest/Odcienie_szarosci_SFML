@@ -8,20 +8,29 @@
 class imgLoader
 {
 public:
-	bool load(std::string&& name)
+	static bool load(std::string&& name)
 	{
-		name = "zdj1.png";
-		if (img.loadFromFile(name)) {
+		
+		if (img.loadFromFile(name)&&!checkFile(name)) {
 			std::cout << "³adowanie " << name << std::endl;
-			text.create(img.getSize().x, img.getSize().y);
-			text.update(img);
-			sprite.setTexture(text);
-			sprite.setTextureRect(sf::IntRect(0, 0, 800, 600));
+			texture.loadFromImage(img);
+			sprite.setTexture(texture);
 			loaded = 1;
+			name_ = name;
 			return 1;
 		}
+		else
+			std::cout << "error no such file" << std::endl;
 		
 		return 0;
+	}
+	static bool checkFile(std::string& name)
+	{
+		return (name == name_) ? 1 : 0;
+	}
+	static bool checkFile(std::string&& name)
+	{
+		return (name == name_) ? 1 : 0;
 	}
 	/*bool load(std::string& name)
 	{
@@ -37,11 +46,14 @@ public:
 		}
 		return 0;
 	}*/
-	std::string name_;
-	sf::Image img;
-	sf::Texture text;
-	sf::RectangleShape square ;
-	sf::Sprite sprite;
-	bool loaded{};
-}static loader;
+	
+	static sf::Image img;
+	static bool loaded;
+	static sf::Sprite sprite;
+private:
+	imgLoader();
+	static sf::Texture texture;
+	static std::string name_;
+};
+
 

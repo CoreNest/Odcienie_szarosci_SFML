@@ -174,10 +174,12 @@
     <ClCompile Include="OdcienieSzarosci.cpp" />
     <ClCompile Include="ParalerWindow.cpp" />
     <ClCompile Include="Setting.cpp" />
+    <ClCompile Include="ImgLoader.cpp" />
     <ClCompile Include="UserInterFace.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ColorConverter.h" />
+    <ClInclude Include="ImgLoader.h" />
     <ClInclude Include="ParalerWindow.h" />
     <ClInclude Include="Setting.h" />
     <ClInclude Include="Slider.h" />

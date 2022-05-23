@@ -3,11 +3,12 @@
 #include <imgui.h>
 #include "imgui-SFML.h"
 
-#include <SFML/Graphics/CircleShape.hpp>
-#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window/Event.hpp>
 #include <thread>
+#include <mutex>
+#include <chrono>
 #include <iostream>
 #include "Setting.h"
 
@@ -43,9 +44,10 @@ public:
                     setting.multiWin = 0;
                 }
             }
+            while(!mux.try_lock())std::this_thread::sleep_for(std::chrono::milliseconds(100));
             window.clear();
-            //window.draw();
-
+            window.draw(grayPicture);
+            mux.unlock();
             //  Here print pre vie picture
 
 
@@ -54,6 +56,13 @@ public:
         }
         started = 0;
     }
+     void setSprite(sf::Sprite&& sprite)
+     {
+         if (mux.try_lock()) {
+             grayPicture = sprite;
+             mux.unlock();
+         }
+     }
      void checkTerminate()
      {
          if (t1.joinable())
@@ -61,5 +70,7 @@ public:
      }
      std::thread t1;    
      bool started{};
+     sf::Sprite grayPicture;
+     std::mutex mux;
 
 };
