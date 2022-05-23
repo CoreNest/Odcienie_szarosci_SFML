@@ -13,7 +13,7 @@ static void HelpMarker(const char* desc)
     }
 }
 
-bool UserInterFace::RenderUi(Settings& setting )
+bool UserInterFace::RenderUi(Settings& setting, ExpandSeting& expandSeting )
 {
     
     

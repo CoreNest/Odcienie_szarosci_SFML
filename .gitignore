@@ -8,6 +8,8 @@
 *.vcxproj
 *.dll
 *.ixx
+imgui.ini
+settings.txt
 
 # User-specific files
 *.rsuser
