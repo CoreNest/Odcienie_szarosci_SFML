@@ -1,6 +1,6 @@
-R:1.548
-B:1.849
-G:1
+R:1.097
+B:2
+G:0.989
 hue:0
 Mixed ratio0.73
-color00007FF74CA2FC94
+color00007FF653EBFC94

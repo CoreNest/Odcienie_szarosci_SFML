@@ -20,6 +20,24 @@
 #include "ColorConverter.h"
 #include "ImgLoader.h"
 
+sf::Image cutingImg(sf::Image& img, int maxSize = 500)
+{
+    double z = (img.getSize().x> img.getSize().y)? img.getSize().x : img.getSize().y;
+    sf::Image small;
+     
+    if (z) {
+        z = maxSize / z;
+        small.create(img.getSize().x*z, img.getSize().y * z);
+        z = 1 / z;
+        for (int i{}; i < small.getSize().x; i++)
+        {
+            for (int j{}; j < small.getSize().y; j++)
+                small.setPixel(i, j, img.getPixel(i * z, j * z));
+        }
+    }
+    return small;
+    
+}
 
 int main() {
     ParalerWindow win;
@@ -74,27 +92,26 @@ int main() {
             }
         }
         ImGui::SFML::Update(window, deltaClock.restart());
-
-        if (UserInterFace::RenderUi()) {        
-                
-            
+        //Checking user settings changes
+        if (UserInterFace::RenderUi()) {            
             if (imgLoader::loaded) {
                 imgLoader::loaded = 0;
-                imgPrevGray=imgPrev = sf::Image(imgLoader::img);
-                
-                
-                baseLookText.loadFromImage(imgPrev);
+                imgPrevGray=imgPrev = cutingImg(imgLoader::img);
+
+                window.setSize(imgLoader::img.getSize());
+                baseLookText.loadFromImage(imgLoader::img);
                 baseLookSprite.setTexture(baseLookText);
+                
                 forConverter = 1;
             } 
             if (imgPrevGray.getSize() != sf::Vector2u(0, 0)) {
-                ColorConverter::iterator(imgPrev, imgPrevGray, setting, expandSeting);//transforming 
-                imgTex.loadFromImage(imgPrevGray);
+                ColorConverter::iterator(imgPrev, imgPrevGray, setting, expandSeting);//transforming in full scale 
+                imgTex.loadFromImage(imgPrevGray);                                    // need to cut to the 500 px for prewiev  
                 imgSprite.setTexture(imgTex);
             }
             
         }
-
+        //drawing sprites
         window.clear();
         
         {
