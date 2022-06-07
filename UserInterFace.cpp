@@ -25,18 +25,19 @@ bool UserInterFace::RenderUi(Settings& setting, ExpandSeting& expandSeting )
     /// Menu
  
     ImGui::Begin("Menu");
-    ImGui::Button("Save")&setting.saveSeting() && ColorConverter::SaveConvImage(imgLoader::img, setting, expandSeting);
-    ImGui::SameLine();
+    
     zmianaUstawien |= ImGui::Checkbox("PreView", &setting.preView);
-    if (setting.preView) {
+    /*if (setting.preView) {
         ImGui::SameLine();
         ImGui::Checkbox("Multi-window", &setting.multiWin);
-    }
+    }*/
     
     ImGui::InputText("sciezka", &setting.sciezka);   
     ImGui::Combo("formats", &setting.rozszerzenie, Settings::items, 8);
     //zmianaUstawien |= ImGui::Button("Save");
     zmianaUstawien |= ImGui::Button("Import image")&& imgLoader::load(setting.getSciezka());
+    ImGui::SameLine();
+    ImGui::Button("Save")& setting.saveSeting() && ColorConverter::SaveConvImage(imgLoader::img, setting, expandSeting);
     zmianaUstawien |= ImGui::SliderFloat("RedRatio", &setting.RedRatio, -2.0f, 2.0f, "ratio = %.3f");
     zmianaUstawien |= ImGui::SliderFloat("BlueRatio", &setting.BlueRatio, -2.0f, 2.0f, "ratio = %.3f");
     zmianaUstawien |= ImGui::SliderFloat("GreanRatio", &setting.GreanRatio, -2.0f, 2.0f, "ratio = %.3f");
