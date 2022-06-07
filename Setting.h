@@ -7,8 +7,8 @@ struct Settings
 {
     //static const std::string  items[]
     static const  char* items[];
-    std::string sciezka = { "zjd1" };
-    int rozszerzenie;
+    std::string sciezka = { "exImage" };
+    int rozszerzenie = 1;
     float RedRatio=1;
     float BlueRatio=1;
     float GreanRatio=1;
