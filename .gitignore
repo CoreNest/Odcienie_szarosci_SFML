@@ -10,6 +10,7 @@
 *.ixx
 imgui.ini
 settings.txt
+exImage_mono.png
 
 # User-specific files
 *.rsuser
