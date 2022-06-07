@@ -20,6 +20,9 @@
 #include "ColorConverter.h"
 #include "ImgLoader.h"
 
+#define WINDOW_X 1300.
+#define WINDOE_Y 600.
+
 sf::Image cutingImg(sf::Image& img, int maxSize = 500)
 {
     double z = (img.getSize().x> img.getSize().y)? img.getSize().x : img.getSize().y;
@@ -42,9 +45,10 @@ sf::Image cutingImg(sf::Image& img, int maxSize = 500)
 int main() {
     ParalerWindow win;
     bool forConverter{};
-    sf::RenderWindow window(sf::VideoMode(800, 600), "ImGui + SFML = <3");
+    sf::RenderWindow window(sf::VideoMode(WINDOW_X, WINDOE_Y), "ImGui + SFML = <3");
     window.setFramerateLimit(60);
     ImGui::SFML::Init(window);
+    sf::err().rdbuf(NULL);
 
     /*sf::Clock clock;
     sf::Time time = sf::Time::Zero;
@@ -79,7 +83,6 @@ int main() {
     //!!dont work!!("yet")//imgSprite.scale(sf::Vector2f(window.getSize().x / imgPrev.getSize().x, window.getSize().y / imgPrev.getSize().y));
 
     sf::Image imgPrevGray;
-    
 
     sf::Clock deltaClock;
     while (window.isOpen()) {
@@ -92,8 +95,18 @@ int main() {
             }
         }
         ImGui::SFML::Update(window, deltaClock.restart());
+
+        bool isHorizontal = false;
+        float windowScale = (float)window.getSize().x / window.getSize().y;
+        float imgScale = 1;
+        if (imgLoader::img.getSize().y != 0) {
+            imgScale = (float)imgLoader::img.getSize().x / imgLoader::img.getSize().y;
+            isHorizontal = windowScale > imgScale;
+        }
+        
+        
         //Checking user settings changes
-        if (UserInterFace::RenderUi()) {            
+        if (UserInterFace::RenderUi()) {
             if (imgLoader::loaded) {
                 imgLoader::loaded = 0;
                 imgPrevGray=imgPrev = cutingImg(imgLoader::img);
@@ -101,25 +114,38 @@ int main() {
                 //window.setSize(imgLoader::img.getSize());
                 baseLookText.loadFromImage(imgLoader::img);
                 baseLookSprite.setTexture(baseLookText);
-                baseLookSprite.setScale(sf::Vector2f(800./ imgLoader::img.getSize().x, 600. / imgLoader::img.getSize().y));
+                baseLookSprite.setScale(sf::Vector2f(WINDOW_X / imgLoader::img.getSize().x, WINDOE_Y / imgLoader::img.getSize().y));
                 forConverter = 1;
             } 
             if (imgPrevGray.getSize() != sf::Vector2u(0, 0)) {
                 ColorConverter::iterator(imgPrev, imgPrevGray, setting, expandSeting);//transforming in full scale 
                 imgTex.loadFromImage(imgPrevGray);                                    // need to cut to the 500 px for prewiev  
                 imgSprite.setTexture(imgTex);
-                imgSprite.setScale(sf::Vector2f(800. / imgPrev.getSize().x, 600. / imgPrev.getSize().y));
+                imgSprite.setScale(sf::Vector2f(WINDOW_X / imgPrev.getSize().x, WINDOE_Y / imgPrev.getSize().y));
             }
             
         }
-        //drawing sprites
+        
+        //drawing & scaling sprites
         window.clear();
         
         {
+            sf::Sprite disp;
             if (setting.preView)
-                window.draw(imgSprite);
+            {
+                disp = imgSprite;
+                //window.draw(imgSprite);
+            }
             else
-                window.draw(baseLookSprite);
+            {
+                disp = baseLookSprite;
+                //window.draw(baseLookSprite);
+            }
+            float spriteScale = imgScale / windowScale;
+            if (isHorizontal) disp.scale(spriteScale, 1);
+            else disp.scale(1, 1 / spriteScale);
+            
+            window.draw(disp);
         }
         //window.draw(circle4);
         // pre view mode per this win draw img with pre vie
