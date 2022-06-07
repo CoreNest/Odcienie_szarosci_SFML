@@ -108,6 +108,7 @@ int main() {
                 ColorConverter::iterator(imgPrev, imgPrevGray, setting, expandSeting);//transforming in full scale 
                 imgTex.loadFromImage(imgPrevGray);                                    // need to cut to the 500 px for prewiev  
                 imgSprite.setTexture(imgTex);
+                imgSprite.setScale(sf::Vector2f(800. / imgPrev.getSize().x, 600. / imgPrev.getSize().y));
             }
             
         }
