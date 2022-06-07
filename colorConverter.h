@@ -1,5 +1,8 @@
 #pragma once
 
+#include <string>
+#include <iostream>
+
 #include <SFML/Graphics.hpp>
 
 #include "Setting.h"
@@ -21,6 +24,8 @@ public:
 	sf::Color operator()(sf::Color col) {  return convertToLinear(col); }
 
 	static bool iterator(sf::Image& org, sf::Image& output, Settings& st, ExpandSeting& exSt);
+
+	static bool SaveConvImage(sf::Image org, Settings& st, ExpandSeting& exSt);
 
 private:
 	float _redWeight;

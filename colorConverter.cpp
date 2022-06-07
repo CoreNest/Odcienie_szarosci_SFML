@@ -24,6 +24,28 @@ bool ColorConverter::iterator(sf::Image& org, sf::Image& output, Settings& st, E
 	return false;
 }
 
+bool ColorConverter::SaveConvImage(sf::Image org, Settings& st, ExpandSeting& exSt)
+{
+	sf::Image res(org);
+	if (!iterator(org, res, st, exSt))
+	{
+		std::cout << "failed to save" << std::endl;
+		return false;
+	}
+	std::cout << "successfully generated mono\nsaving to file (might take some time)" << std::endl;
+	
+	if (res.saveToFile(std::string(st.sciezka) + "_mono." + st.items[st.rozszerzenie]))
+	{
+		std::cout << "saved to :" << "Mono_" << setting.getSciezka() << std::endl;
+		return true;
+	}
+	else
+	{
+		std::cout << "failed to save" << std::endl;
+		return false;
+	}
+}
+
 ColorConverter::ColorConverter() :
 	ColorConverter(1, 1, 1) {}
 

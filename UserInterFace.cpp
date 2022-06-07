@@ -2,6 +2,7 @@
 #include <misc/cpp/imgui_stdlib.h>
 
 #include "imgLoader.h"
+#include "ColorConverter.h"
 
 
 static void HelpMarker(const char* desc)
@@ -24,7 +25,7 @@ bool UserInterFace::RenderUi(Settings& setting, ExpandSeting& expandSeting )
     /// Menu
  
     ImGui::Begin("Menu");
-    ImGui::Button("Save")&setting.saveSeting();
+    ImGui::Button("Save")&setting.saveSeting() && ColorConverter::SaveConvImage(imgLoader::img, setting, expandSeting);
     ImGui::SameLine();
     zmianaUstawien |= ImGui::Checkbox("PreView", &setting.preView);
     if (setting.preView) {
@@ -34,6 +35,7 @@ bool UserInterFace::RenderUi(Settings& setting, ExpandSeting& expandSeting )
     
     ImGui::InputText("sciezka", &setting.sciezka);   
     ImGui::Combo("formats", &setting.rozszerzenie, Settings::items, 8);
+    //zmianaUstawien |= ImGui::Button("Save");
     zmianaUstawien |= ImGui::Button("Import image")&& imgLoader::load(setting.getSciezka());
     zmianaUstawien |= ImGui::SliderFloat("RedRatio", &setting.RedRatio, -2.0f, 2.0f, "ratio = %.3f");
     zmianaUstawien |= ImGui::SliderFloat("BlueRatio", &setting.BlueRatio, -2.0f, 2.0f, "ratio = %.3f");
