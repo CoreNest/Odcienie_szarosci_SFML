@@ -3,4 +3,4 @@ B:1
 G:1
 hue:0
 Mixed ratio0.73
-color00007FF74C7A51B4
+color00007FF6875D61B4
