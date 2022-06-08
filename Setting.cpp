@@ -6,7 +6,7 @@ using namespace std;
 const char* Settings::items[] = { "jpg", "png", "bmp", "png", "tga", "gif", "hdr", "pic" };
 
 bool Settings::saveSeting() {
-	fstream plik("settings.txt", ios::out);
+	fstream plik(setPath, ios::out);
 	if (plik.is_open())
 	{
 		plik << "R:" << RedRatio << endl;
@@ -32,7 +32,7 @@ bool Settings::saveSeting() {
 
 }
 bool Settings::load(ExpandSeting& cos) {
-	fstream plik("settings.txt", ios::in);
+	fstream plik(setPath, ios::in);
 	if (plik.is_open())
 	{
 

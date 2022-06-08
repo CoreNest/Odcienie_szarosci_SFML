@@ -9,6 +9,8 @@ struct Settings
     //static const std::string  items[]
     static const  char* items[];
     std::string sciezka = { "exImage" };
+    std::string setPath = { "settings.txt" };
+
     int rozszerzenie = 1;
     float RedRatio=1;
     float BlueRatio=1;

@@ -37,9 +37,12 @@ bool UserInterFace::RenderUi(Settings& setting, ExpandSeting& expandSeting )
     //zmianaUstawien |= ImGui::Button("Save");
     zmianaUstawien |= ImGui::Button("Import image")&& imgLoader::load(setting.getSciezka());
     ImGui::SameLine();
-    ImGui::Button("Save")&& setting.saveSeting() && ColorConverter::SaveConvImage(imgLoader::img, setting, expandSeting);
+    ImGui::Button("Save") && ColorConverter::SaveConvImage(imgLoader::img, setting, expandSeting);
+    
+    ImGui::InputText("settings", &setting.setPath);
+    ImGui::Button("Save Settings") && setting.saveSeting();
     ImGui::SameLine();
-    zmianaUstawien |= ImGui::Button("Load Settings")&& setting.load(expandSeting);
+    zmianaUstawien |= ImGui::Button("Load Settings") && setting.load(expandSeting);
     zmianaUstawien |= ImGui::SliderFloat("RedRatio", &setting.RedRatio, -2.0f, 2.0f, "ratio = %.3f");
     zmianaUstawien |= ImGui::SliderFloat("BlueRatio", &setting.BlueRatio, -2.0f, 2.0f, "ratio = %.3f");
     zmianaUstawien |= ImGui::SliderFloat("GreanRatio", &setting.GreanRatio, -2.0f, 2.0f, "ratio = %.3f");
