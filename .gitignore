@@ -12,6 +12,7 @@ imgui.ini
 settings.txt
 exImage_mono.png
 *_mono.*
+settings*.txt
 
 # User-specific files
 *.rsuser
