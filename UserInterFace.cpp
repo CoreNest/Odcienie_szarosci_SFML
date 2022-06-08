@@ -37,7 +37,7 @@ bool UserInterFace::RenderUi(Settings& setting, ExpandSeting& expandSeting )
     //zmianaUstawien |= ImGui::Button("Save");
     zmianaUstawien |= ImGui::Button("Import image")&& imgLoader::load(setting.getSciezka());
     ImGui::SameLine();
-    ImGui::Button("Save") && ColorConverter::SaveConvImage(imgLoader::img, setting, expandSeting);
+    ImGui::Button("Export image") && ColorConverter::SaveConvImage(imgLoader::img, setting, expandSeting);
     
     ImGui::InputText("settings", &setting.setPath);
     ImGui::Button("Save Settings") && setting.saveSeting();

@@ -11,15 +11,16 @@ public:
 	static bool load(std::string&& name)
 	{
 		if (img.loadFromFile(name)&&!checkFile(name)) {
-			std::cout << "³adowanie " << name << std::endl;
+			std::cout << "Loading " << name << std::endl;
 			texture.loadFromImage(img);
 			sprite.setTexture(texture);
 			loaded = 1;
 			name_ = name;
+			std::cout << "\033[1;32mloaded\033[0m: " << name << std::endl;
 			return 1;
 		}
 		else
-			std::cout << "error no such file" << std::endl;
+			std::cout << "\033[1;31mError no such file\033[0m" << std::endl;
 		
 		return 0;
 	}
