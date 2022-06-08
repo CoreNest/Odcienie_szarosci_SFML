@@ -46,15 +46,15 @@ bool UserInterFace::RenderUi(Settings& setting, ExpandSeting& expandSeting )
     zmianaUstawien |= ImGui::SliderFloat("RedRatio", &setting.RedRatio, -2.0f, 2.0f, "ratio = %.3f");
     zmianaUstawien |= ImGui::SliderFloat("BlueRatio", &setting.BlueRatio, -2.0f, 2.0f, "ratio = %.3f");
     zmianaUstawien |= ImGui::SliderFloat("GreanRatio", &setting.GreanRatio, -2.0f, 2.0f, "ratio = %.3f");
-    zmianaUstawien |= ImGui::Checkbox("Hue", &setting.hue);
+    zmianaUstawien |= ImGui::Checkbox("Bichromic", &setting.hue);
     ImGui::SameLine();
-    zmianaUstawien |= ImGui::Checkbox("Expand", &setting.expand);
+    zmianaUstawien |= ImGui::Checkbox("Except", &setting.expand);
     ImGui::End();
    
      /// Hue Panel 
     
     if (setting.hue) {
-        zmianaUstawien |= ImGui::Begin("Hue Panel", &setting.hue);
+        zmianaUstawien |= ImGui::Begin("Bichromic Panel", &setting.hue);
         zmianaUstawien |= ImGui::ColorEdit3("Bright side", setting.colBright);
         ImGui::SameLine(); HelpMarker("Chose the hoe for light part");
         zmianaUstawien |= ImGui::ColorEdit3("Dark side", setting.colDark);
@@ -62,7 +62,7 @@ bool UserInterFace::RenderUi(Settings& setting, ExpandSeting& expandSeting )
         ImGui::End();
     }
     if (setting.expand) {
-        zmianaUstawien |= ImGui::Begin("Expand Panel", &setting.expand);
+        zmianaUstawien |= ImGui::Begin("Except Color Panel", &setting.expand);
         zmianaUstawien |= ImGui::ColorEdit3("Saved color", expandSeting.saveColor);
         zmianaUstawien |= ImGui::SliderFloat("PowerOfDisapiring", &expandSeting.Ratio, 0.0f, 1.0f, "ratio = %.3f");
         
