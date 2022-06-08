@@ -1,6 +1,9 @@
-R:1
-B:1
-G:1
-hue:0
-Mixed ratio0.73
-color00007FF6875D61B4
+R:1.054
+B:-1.398
+G:-0.946
+hue:1
+colBright:0.243137 1 1
+colDark:0 0.964706 0
+expand:1
+Mixed ratio:0.03
+color:0.01 0.18 0.1098

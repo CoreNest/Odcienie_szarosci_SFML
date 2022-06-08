@@ -2,6 +2,7 @@
 #include <string>
 
 
+struct ExpandSeting;
 
 struct Settings
 {
@@ -23,6 +24,7 @@ struct Settings
         return sciezka + '.' + items[rozszerzenie];
     }
     bool saveSeting();
+    bool load(ExpandSeting&);
 }static setting;
 
 
@@ -30,4 +32,5 @@ struct ExpandSeting
 {
     float Ratio=0.73;
     float saveColor[3] = {0.161,0.698,0.1098};
+    void loading(std::fstream& in);
 }static expandSeting;
