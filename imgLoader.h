@@ -10,7 +10,6 @@ class imgLoader
 public:
 	static bool load(std::string&& name)
 	{
-		
 		if (img.loadFromFile(name)&&!checkFile(name)) {
 			std::cout << "³adowanie " << name << std::endl;
 			texture.loadFromImage(img);

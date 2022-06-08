@@ -21,7 +21,7 @@
 #include "ImgLoader.h"
 
 #define WINDOW_X 1300.
-#define WINDOE_Y 600.
+#define WINDOW_Y 600.
 
 sf::Image cutingImg(sf::Image& img, int maxSize = 500)
 {
@@ -44,8 +44,8 @@ sf::Image cutingImg(sf::Image& img, int maxSize = 500)
 
 int main() {
     ParalerWindow win;
-    bool forConverter{};
-    sf::RenderWindow window(sf::VideoMode(WINDOW_X, WINDOE_Y), "ImGui + SFML = <3");
+    //bool forConverter{};
+    sf::RenderWindow window(sf::VideoMode(WINDOW_X, WINDOW_Y), "ImGui + SFML = <3");
     window.setFramerateLimit(60);
     ImGui::SFML::Init(window);
     sf::err().rdbuf(NULL);
@@ -80,7 +80,6 @@ int main() {
     sf::Sprite imgSprite;
     sf::Texture baseLookText;
     sf::Sprite baseLookSprite;
-    //!!dont work!!("yet")//imgSprite.scale(sf::Vector2f(window.getSize().x / imgPrev.getSize().x, window.getSize().y / imgPrev.getSize().y));
 
     sf::Image imgPrevGray;
 
@@ -100,7 +99,7 @@ int main() {
         float windowScale = (float)window.getSize().x / window.getSize().y;
         float imgScale = 1;
         if (imgLoader::img.getSize().y != 0) {
-            imgScale = (float)imgLoader::img.getSize().x / imgLoader::img.getSize().y;
+            imgScale = (float)imgPrev.getSize().x / imgPrev.getSize().y;
             isHorizontal = windowScale > imgScale;
         }
         
@@ -112,16 +111,16 @@ int main() {
                 imgPrevGray=imgPrev = cutingImg(imgLoader::img);
 
                 //window.setSize(imgLoader::img.getSize());
-                baseLookText.loadFromImage(imgLoader::img);
+                baseLookText.loadFromImage(imgPrev);
                 baseLookSprite.setTexture(baseLookText);
-                baseLookSprite.setScale(sf::Vector2f(WINDOW_X / imgLoader::img.getSize().x, WINDOE_Y / imgLoader::img.getSize().y));
-                forConverter = 1;
+                baseLookSprite.setScale(sf::Vector2f(WINDOW_X / imgPrev.getSize().x, WINDOW_Y / imgPrev.getSize().y));
+                //forConverter = 1;
             } 
             if (imgPrevGray.getSize() != sf::Vector2u(0, 0)) {
                 ColorConverter::iterator(imgPrev, imgPrevGray, setting, expandSeting);//transforming in full scale 
                 imgTex.loadFromImage(imgPrevGray);                                    // need to cut to the 500 px for prewiev  
                 imgSprite.setTexture(imgTex);
-                imgSprite.setScale(sf::Vector2f(WINDOW_X / imgPrev.getSize().x, WINDOE_Y / imgPrev.getSize().y));
+                imgSprite.setScale(sf::Vector2f(WINDOW_X / imgPrev.getSize().x, WINDOW_Y / imgPrev.getSize().y));
             }
             
         }
