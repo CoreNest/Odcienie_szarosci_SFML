@@ -1,4 +1,5 @@
 #include "colorConverter.h"
+#include <windows.h>
 
 #define M_PI 3.14159265358979323846
 
@@ -29,19 +30,21 @@ bool ColorConverter::SaveConvImage(sf::Image org, Settings& st, ExpandSeting& ex
 	sf::Image res(org);
 	if (!iterator(org, res, st, exSt))
 	{
-		std::cout << "failed to generate\n\033[1;31mFAIL!!!\033[0m" << std::endl;
+		std::cout << "failed to generate\n:";
+		std::cout << "FAIL!!!" << std::endl;
 		return false;
 	}
 	std::cout << "successfully generated mono_image, \nstarted saving to file (might take up to 10s)" << std::endl;
 	
 	if (res.saveToFile(std::string(st.sciezka) + "_mono." + st.items[st.rozszerzenie]))
 	{
-		std::cout << "saved to :" << std::string(st.sciezka) + "_mono." + st.items[st.rozszerzenie] << "\n\033[1;32mSUCCESS!!!\033[0m" << std::endl;
+		std::cout << "saved to :" << std::string(st.sciezka) + "_mono." + st.items[st.rozszerzenie] << "\nSUCCESS!!!" << std::endl;
 		return true;
 	}
 	else
 	{
-		std::cout << "failed to save\n\033[1;31mFAIL!!!\033[0m" << std::endl;
+		std::cout << "failed to save\n";
+		std::cout << "FAIL!!!" << std::endl;
 		return false;
 	}
 }

@@ -16,11 +16,11 @@ public:
 			sprite.setTexture(texture);
 			loaded = 1;
 			name_ = name;
-			std::cout << "\033[1;32mloaded\033[0m: " << name << std::endl;
+			std::cout << "loaded: " << name << std::endl;
 			return 1;
 		}
 		else
-			std::cout << "\033[1;31mError no such file\033[0m" << std::endl;
+			std::cout << "Error no such file" << std::endl;
 		
 		return 0;
 	}
