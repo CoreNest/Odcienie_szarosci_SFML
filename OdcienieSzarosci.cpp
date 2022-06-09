@@ -25,12 +25,12 @@
 
 sf::Image cutingImg(sf::Image& img, int maxSize = 500)
 {
-    double z = (img.getSize().x> img.getSize().y)? img.getSize().x : img.getSize().y;
+    double z = (img.getSize().x > img.getSize().y) ? img.getSize().x : img.getSize().y;
     sf::Image small;
-     
+
     if (z) {
         z = maxSize / z;
-        small.create(img.getSize().x*z, img.getSize().y * z);
+        small.create(img.getSize().x * z, img.getSize().y * z);
         z = 1 / z;
         for (int i{}; i < small.getSize().x; i++)
         {
@@ -39,7 +39,7 @@ sf::Image cutingImg(sf::Image& img, int maxSize = 500)
         }
     }
     return small;
-    
+
 }
 
 int main() {
@@ -92,42 +92,52 @@ int main() {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
+            if (event.type == sf::Event::Resized)
+            {
+                sf::Vector2u ss = window.getSize();
+                sf::Vector2f s = sf::Vector2<float>(ss);
+                double co = ((s.x - 00) / imgPrev.getSize().x < (s.y / imgLoader::img.getSize().y)) ? (s.x - 00) / imgLoader::img.getSize().x : s.y / imgLoader::img.getSize().y;
+                baseLookSprite.setScale(sf::Vector2f(co, co));
+                co = ((s.x - 00) / imgPrev.getSize().x < (s.y / imgPrev.getSize().y)) ? (s.x - 00) / imgPrev.getSize().x : s.y / imgPrev.getSize().y;
+                imgSprite.setScale(sf::Vector2f(co, co));
+            }
         }
         ImGui::SFML::Update(window, deltaClock.restart());
 
-        bool isHorizontal = false;
-        float windowScale = (float)window.getSize().x / window.getSize().y;
-        float imgScale = 1;
-        if (imgLoader::img.getSize().y != 0) {
-            imgScale = (float)imgPrev.getSize().x / imgPrev.getSize().y;
-            isHorizontal = windowScale > imgScale;
-        }
-        
-        
+
+
+
         //Checking user settings changes
         if (UserInterFace::RenderUi()) {
             if (imgLoader::loaded) {
                 imgLoader::loaded = 0;
-                imgPrevGray=imgPrev = cutingImg(imgLoader::img);
+                imgPrevGray = imgPrev = cutingImg(imgLoader::img);
 
                 //window.setSize(imgLoader::img.getSize());
                 baseLookText.loadFromImage(imgLoader::img);// orginal photo show not cutted one !!!!!
+                baseLookSprite = sf::Sprite();
                 baseLookSprite.setTexture(baseLookText);
-                baseLookSprite.setScale(sf::Vector2f(WINDOW_X / imgLoader::img.getSize().x, WINDOW_Y / imgLoader::img.getSize().y));
+                sf::Vector2u ss = window.getSize();
+                sf::Vector2f s = sf::Vector2<float>(ss);
+                double co = ((s.x) / imgPrev.getSize().x < (s.y / imgLoader::img.getSize().y)) ? (s.x) / imgLoader::img.getSize().x : s.y / imgLoader::img.getSize().y;
+                baseLookSprite.setScale(sf::Vector2f(co, co));
                 //forConverter = 1;
-            } 
+            }
             if (imgPrevGray.getSize() != sf::Vector2u(0, 0)) {
                 ColorConverter::iterator(imgPrev, imgPrevGray, setting, expandSeting);//transforming in full scale 
                 imgTex.loadFromImage(imgPrevGray);                                    // need to cut to the 500 px for prewiev  
                 imgSprite.setTexture(imgTex);
-                imgSprite.setScale(sf::Vector2f(WINDOW_X / imgPrev.getSize().x, WINDOW_Y / imgPrev.getSize().y));
+                sf::Vector2u ss = window.getSize();
+                sf::Vector2f s = sf::Vector2<float>(ss);
+                double co = ((s.x - 00) / imgPrev.getSize().x < (s.y / imgPrev.getSize().y)) ? (s.x - 00) / imgPrev.getSize().x : s.y / imgPrev.getSize().y;
+                imgSprite.setScale(sf::Vector2f(co, co));
             }
-            
+
         }
-        
+
         //drawing & scaling sprites
         window.clear();
-        
+
         {
             sf::Sprite disp;
             if (setting.preView)
@@ -140,10 +150,8 @@ int main() {
                 disp = baseLookSprite;
                 //window.draw(baseLookSprite);
             }
-            float spriteScale = imgScale / windowScale;
-            if (isHorizontal) disp.scale(spriteScale, 1);
-            else disp.scale(1, 1 / spriteScale);
-            
+
+
             window.draw(disp);
         }
         //window.draw(circle4);
