@@ -95,13 +95,7 @@ int main() {
         }
         ImGui::SFML::Update(window, deltaClock.restart());
 
-        bool isHorizontal = false;
-        float windowScale = (float)window.getSize().x / window.getSize().y;
-        float imgScale = 1;
-        if (imgLoader::img.getSize().y != 0) {
-            imgScale = (float)imgPrev.getSize().x / imgPrev.getSize().y;
-            isHorizontal = windowScale > imgScale;
-        }
+
         
         
         //Checking user settings changes
@@ -112,6 +106,7 @@ int main() {
 
                 //window.setSize(imgLoader::img.getSize());
                 baseLookText.loadFromImage(imgLoader::img);// orginal photo show not cutted one !!!!!
+                baseLookSprite = sf::Sprite();
                 baseLookSprite.setTexture(baseLookText);
                 baseLookSprite.setScale(sf::Vector2f(WINDOW_X / imgLoader::img.getSize().x, WINDOW_Y / imgLoader::img.getSize().y));
                 //forConverter = 1;
@@ -140,9 +135,7 @@ int main() {
                 disp = baseLookSprite;
                 //window.draw(baseLookSprite);
             }
-            float spriteScale = imgScale / windowScale;
-            if (isHorizontal) disp.scale(spriteScale, 1);
-            else disp.scale(1, 1 / spriteScale);
+            
             
             window.draw(disp);
         }
