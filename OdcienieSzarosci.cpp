@@ -1,11 +1,8 @@
 // OdcienieSzarosci.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
-
 #define SFML_Proj
-
 #include <imgui.h>
 #include "imgui-SFML.h"
-
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
@@ -14,15 +11,12 @@
 #include <SFML/Graphics/Image.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window/Event.hpp>
-
 #include "UserInterFace.h"
 #include "ParalerWindow.h"
 #include "ColorConverter.h"
 #include "ImgLoader.h"
-
 #define WINDOW_X 1300.
 #define WINDOW_Y 600.
-
 sf::Image cutingImg(sf::Image& img, int maxSize = 500)
 {
     double z = (img.getSize().x > img.getSize().y) ? img.getSize().x : img.getSize().y;
@@ -41,7 +35,6 @@ sf::Image cutingImg(sf::Image& img, int maxSize = 500)
     return small;
 
 }
-
 int main() {
     ParalerWindow win;
     //bool forConverter{};
@@ -49,63 +42,28 @@ int main() {
     window.setFramerateLimit(60);
     ImGui::SFML::Init(window);
     sf::err().rdbuf(NULL);
-
     /*sf::Clock clock;
     sf::Time time = sf::Time::Zero;
     unsigned int FPS = 0, frame_counter = 0;
     sf::Text fps_text;*/ //fps counter part 1 (part 2 also must be uncommented to work)
-
-    //examples of shapes (***CAN BE DELEATED***)
-    /*sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);*/
-
-    /*sf::VertexArray circle4(sf::TriangleStrip, 512);
-    sf::Vector2f pos4(300, 330);
-    int radius = 125;
-
-    for (int i = 0; i < 256; i++)
-    {
-        circle4[i * 2].position = pos4 + sf::Vector2f(cos(3.14159 * i / 127) * radius, -sin(3.14159 * i / 127) * radius);
-        circle4[i * 2].color = sf::Color(255, i, 1 * 255 / 100);
-
-        circle4[i * 2 + 1].position = pos4;
-        circle4[i * 2 + 1].color = sf::Color(0, i, 1 * 255 / 100);
-    }*/
-
+    
     //allocation of Img, Texture, Sprite and ResultImg
     sf::Image imgPrev;
-    //imgPrev.loadFromFile("zdj1.png");//*************(TO DO) getting std::string of location of file
-
     sf::Texture imgTex;
     sf::Sprite imgSprite;
     sf::Texture baseLookText;
     sf::Sprite baseLookSprite;
-
     sf::Image imgPrevGray;
-
     sf::Clock deltaClock;
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
             ImGui::SFML::ProcessEvent(window, event);
-
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
-            if (event.type == sf::Event::Resized)
-            {
-                sf::Vector2u ss = window.getSize();
-                sf::Vector2f s = sf::Vector2<float>(ss);
-                double co = ((s.x - 00) / imgPrev.getSize().x < (s.y / imgLoader::img.getSize().y)) ? (s.x - 00) / imgLoader::img.getSize().x : s.y / imgLoader::img.getSize().y;
-                baseLookSprite.setScale(sf::Vector2f(co, co));
-                co = ((s.x - 00) / imgPrev.getSize().x < (s.y / imgPrev.getSize().y)) ? (s.x - 00) / imgPrev.getSize().x : s.y / imgPrev.getSize().y;
-                imgSprite.setScale(sf::Vector2f(co, co));
-            }
         }
         ImGui::SFML::Update(window, deltaClock.restart());
-
-
-
 
         //Checking user settings changes
         if (UserInterFace::RenderUi()) {
@@ -117,22 +75,24 @@ int main() {
                 baseLookText.loadFromImage(imgLoader::img);// orginal photo show not cutted one !!!!!
                 baseLookSprite = sf::Sprite();
                 baseLookSprite.setTexture(baseLookText);
-                sf::Vector2u ss = window.getSize();
-                sf::Vector2f s = sf::Vector2<float>(ss);
-                double co = ((s.x) / imgPrev.getSize().x < (s.y / imgLoader::img.getSize().y)) ? (s.x) / imgLoader::img.getSize().x : s.y / imgLoader::img.getSize().y;
-                baseLookSprite.setScale(sf::Vector2f(co, co));
+                baseLookSprite.setScale(sf::Vector2f(WINDOW_X / imgLoader::img.getSize().x, WINDOW_Y / imgLoader::img.getSize().y));
                 //forConverter = 1;
             }
             if (imgPrevGray.getSize() != sf::Vector2u(0, 0)) {
                 ColorConverter::iterator(imgPrev, imgPrevGray, setting, expandSeting);//transforming in full scale 
                 imgTex.loadFromImage(imgPrevGray);                                    // need to cut to the 500 px for prewiev  
                 imgSprite.setTexture(imgTex);
-                sf::Vector2u ss = window.getSize();
-                sf::Vector2f s = sf::Vector2<float>(ss);
-                double co = ((s.x - 00) / imgPrev.getSize().x < (s.y / imgPrev.getSize().y)) ? (s.x - 00) / imgPrev.getSize().x : s.y / imgPrev.getSize().y;
-                imgSprite.setScale(sf::Vector2f(co, co));
+                imgSprite.setScale(sf::Vector2f(WINDOW_X / imgPrev.getSize().x, WINDOW_Y / imgPrev.getSize().y));
             }
 
+        }
+
+        bool isHorizontal = false;
+        float windowScale = (float)window.getSize().x / window.getSize().y;
+        float imgScale = 1;
+        if (imgLoader::img.getSize().y != 0) {
+            imgScale = (float)imgPrev.getSize().x / imgPrev.getSize().y;
+            isHorizontal = windowScale > imgScale;
         }
 
         //drawing & scaling sprites
@@ -140,6 +100,8 @@ int main() {
 
         {
             sf::Sprite disp;
+            float spriteScale = imgScale / windowScale;
+
             if (setting.preView)
             {
                 disp = imgSprite;
@@ -150,13 +112,13 @@ int main() {
                 disp = baseLookSprite;
                 //window.draw(baseLookSprite);
             }
+            if (isHorizontal) disp.scale(spriteScale, 1);
+            else disp.scale(1, 1 / spriteScale);
 
 
             window.draw(disp);
         }
-        //window.draw(circle4);
-        // pre view mode per this win draw img with pre vie
-
+        
         /*if (clock.getElapsedTime().asSeconds() >= 1.0f)
         {
             FPS = (unsigned int)((float)frame_counter / clock.getElapsedTime().asSeconds());
@@ -165,12 +127,9 @@ int main() {
             window.setTitle(std::to_string(FPS));
         }
         frame_counter++;*/ //fps counter part 2 (part 1 also must be uncommented to work)
-
         ImGui::SFML::Render(window);
         window.display();
     }
-
     ImGui::SFML::Shutdown();
     win.checkTerminate();
 }
-
