@@ -43,34 +43,12 @@ sf::Image cutingImg(sf::Image& img, int maxSize = 500)
 }
 
 int main() {
-    ParalerWindow win;
+    //ParalerWindow win;
     //bool forConverter{};
     sf::RenderWindow window(sf::VideoMode(WINDOW_X, WINDOW_Y), "ImGui + SFML = <3");
     window.setFramerateLimit(60);
     ImGui::SFML::Init(window);
     sf::err().rdbuf(NULL);
-
-    /*sf::Clock clock;
-    sf::Time time = sf::Time::Zero;
-    unsigned int FPS = 0, frame_counter = 0;
-    sf::Text fps_text;*/ //fps counter part 1 (part 2 also must be uncommented to work)
-
-    //examples of shapes (***CAN BE DELEATED***)
-    /*sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);*/
-
-    /*sf::VertexArray circle4(sf::TriangleStrip, 512);
-    sf::Vector2f pos4(300, 330);
-    int radius = 125;
-
-    for (int i = 0; i < 256; i++)
-    {
-        circle4[i * 2].position = pos4 + sf::Vector2f(cos(3.14159 * i / 127) * radius, -sin(3.14159 * i / 127) * radius);
-        circle4[i * 2].color = sf::Color(255, i, 1 * 255 / 100);
-
-        circle4[i * 2 + 1].position = pos4;
-        circle4[i * 2 + 1].color = sf::Color(0, i, 1 * 255 / 100);
-    }*/
 
     //allocation of Img, Texture, Sprite and ResultImg
     sf::Image imgPrev;
@@ -106,9 +84,12 @@ int main() {
 
 
 
-
+        // Loading pchoto and counting all color 
+        
+      
         //Checking user settings changes
         if (UserInterFace::RenderUi()) {
+            // kiedy jest zmiana zdjêcia
             if (imgLoader::loaded) {
                 imgLoader::loaded = 0;
                 imgPrevGray = imgPrev = cutingImg(imgLoader::img);
@@ -123,6 +104,8 @@ int main() {
                 baseLookSprite.setScale(sf::Vector2f(co, co));
                 //forConverter = 1;
             }
+            // upewnienie sie ze zdjecie istnieje
+            // wyliczanie szarefo zdjecia
             if (imgPrevGray.getSize() != sf::Vector2u(0, 0)) {
                 ColorConverter::iterator(imgPrev, imgPrevGray, setting, expandSeting);//transforming in full scale 
                 imgTex.loadFromImage(imgPrevGray);                                    // need to cut to the 500 px for prewiev  
@@ -132,45 +115,30 @@ int main() {
                 double co = ((s.x - 00) / imgPrev.getSize().x < (s.y / imgPrev.getSize().y)) ? (s.x - 00) / imgPrev.getSize().x : s.y / imgPrev.getSize().y;
                 imgSprite.setScale(sf::Vector2f(co, co));
             }
-
         }
+
 
         //drawing & scaling sprites
         window.clear();
-
         {
-            sf::Sprite disp;
+            sf::Sprite* disp;
             if (setting.preView)
             {
-                disp = imgSprite;
-                //window.draw(imgSprite);
+                disp = &imgSprite;
             }
             else
             {
-                disp = baseLookSprite;
-                //window.draw(baseLookSprite);
+                disp = &baseLookSprite;
             }
-
-
-            window.draw(disp);
+            window.draw(*disp);
         }
-        //window.draw(circle4);
-        // pre view mode per this win draw img with pre vie
 
-        /*if (clock.getElapsedTime().asSeconds() >= 1.0f)
-        {
-            FPS = (unsigned int)((float)frame_counter / clock.getElapsedTime().asSeconds());
-            clock.restart();
-            frame_counter = 0;
-            window.setTitle(std::to_string(FPS));
-        }
-        frame_counter++;*/ //fps counter part 2 (part 1 also must be uncommented to work)
 
         ImGui::SFML::Render(window);
         window.display();
     }
 
     ImGui::SFML::Shutdown();
-    win.checkTerminate();
+    //win.checkTerminate();
 }
 
