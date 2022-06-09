@@ -4,19 +4,13 @@
 
 #include <string>
 #include <iostream>
-#include <fstream>
 
 class imgLoader
 {
 public:
 	static bool load(std::string&& name)
 	{
-		if (checkFile(name))
-		{
-			std::cout << "Already loaded!" << std::endl;
-			return 0;
-		}
-		if (std::ifstream(name.c_str()).good() && img.loadFromFile(name)) {
+		if (img.loadFromFile(name)&&!checkFile(name)) {
 			std::cout << "Loading " << name << std::endl;
 			texture.loadFromImage(img);
 			sprite.setTexture(texture);
