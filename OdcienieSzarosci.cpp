@@ -111,9 +111,9 @@ int main() {
                 imgPrevGray=imgPrev = cutingImg(imgLoader::img);
 
                 //window.setSize(imgLoader::img.getSize());
-                baseLookText.loadFromImage(imgPrev);
+                baseLookText.loadFromImage(imgLoader::img);// orginal photo show not cutted one !!!!!
                 baseLookSprite.setTexture(baseLookText);
-                baseLookSprite.setScale(sf::Vector2f(WINDOW_X / imgPrev.getSize().x, WINDOW_Y / imgPrev.getSize().y));
+                baseLookSprite.setScale(sf::Vector2f(WINDOW_X / imgLoader::img.getSize().x, WINDOW_Y / imgLoader::img.getSize().y));
                 //forConverter = 1;
             } 
             if (imgPrevGray.getSize() != sf::Vector2u(0, 0)) {
