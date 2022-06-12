@@ -11,12 +11,14 @@
 #include <SFML/Graphics/Image.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/Window/Event.hpp>
+
 #include "UserInterFace.h"
 #include "ParalerWindow.h"
 #include "ColorConverter.h"
 #include "ImgLoader.h"
 #define WINDOW_X 1300.
 #define WINDOW_Y 600.
+
 sf::Image cutingImg(sf::Image& img, int maxSize = 500)
 {
     double z = (img.getSize().x > img.getSize().y) ? img.getSize().x : img.getSize().y;

@@ -25,7 +25,7 @@ public:
 
 	static bool iterator(sf::Image& org, sf::Image& output, Settings& st, ExpandSeting& exSt);
 
-	static bool SaveConvImage(sf::Image org, Settings& st, ExpandSeting& exSt);
+	static bool SaveConvImage(sf::Image org, Settings& st, ExpandSeting& exSt, std::string path);
 
 private:
 	float _redWeight;

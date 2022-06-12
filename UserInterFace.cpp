@@ -27,22 +27,23 @@ bool UserInterFace::RenderUi(Settings& setting, ExpandSeting& expandSeting )
     ImGui::Begin("Menu");
     
     zmianaUstawien |= ImGui::Checkbox("PreView", &setting.preView);
-    /*if (setting.preView) {
-        ImGui::SameLine();
-        ImGui::Checkbox("Multi-window", &setting.multiWin);
-    }*/
-    
-    ImGui::InputText("sciezka", &setting.sciezka);   
-    ImGui::Combo("formats", &setting.rozszerzenie, Settings::items, 8);
-    //zmianaUstawien |= ImGui::Button("Save");
-    zmianaUstawien |= ImGui::Button("Import image")&& imgLoader::load(setting.getSciezka());
+
+    if (ImGui::Button("Import image"))
+        ImGuiFileDialog::Instance()->OpenDialog("ChooseImgLoc", "Choose File", ".png,.jpg,.jpeg,.bmp", setting.sciezka + '.' + setting.items[setting.rozszerzenie]);
     ImGui::SameLine();
-    ImGui::Button("Export image") && ColorConverter::SaveConvImage(imgLoader::img, setting, expandSeting);
-    
-    ImGui::InputText("settings", &setting.setPath);
-    ImGui::Button("Save Settings") && setting.saveSeting();
+    if (ImGui::Button("Export image"))
+        ImGuiFileDialog::Instance()->OpenDialog("ChooseSaveLoc", "Choose File", ".png,.jpg,.jpeg,.bmp", std::string(setting.sciezka) + "_mono." + setting.items[setting.rozszerzenie]);
+
+    if(ImGui::Button("Load Settings"))
+    {
+        ImGuiFileDialog::Instance()->OpenDialog("ChooseSetLoc", "Choose File", ".txt", setting.setPath);
+    }
     ImGui::SameLine();
-    zmianaUstawien |= ImGui::Button("Load Settings") && setting.load(expandSeting);
+    if (ImGui::Button("Save Settings"))
+    {
+        ImGuiFileDialog::Instance()->OpenDialog("ChooseSetSaveLoc", "Choose File", ".txt", setting.setPath);
+    }
+    
     zmianaUstawien |= ImGui::SliderFloat("RedRatio", &setting.RedRatio, -2.0f, 2.0f, "ratio = %.3f");
     zmianaUstawien |= ImGui::SliderFloat("BlueRatio", &setting.BlueRatio, -2.0f, 2.0f, "ratio = %.3f");
     zmianaUstawien |= ImGui::SliderFloat("GreanRatio", &setting.GreanRatio, -2.0f, 2.0f, "ratio = %.3f");
@@ -68,6 +69,53 @@ bool UserInterFace::RenderUi(Settings& setting, ExpandSeting& expandSeting )
         
         ImGui::End();
     }
+
+
+    ////////
+
+    if (ImGuiFileDialog::Instance()->Display("ChooseSaveLoc"))
+    {
+        if (ImGuiFileDialog::Instance()->IsOk())
+        {
+            ColorConverter::SaveConvImage(imgLoader::img, setting, expandSeting, ImGuiFileDialog::Instance()->GetFilePathName());
+        }
+        ImGuiFileDialog::Instance()->Close();
+    }
+
+    //bool zmiana = false;
+
+    if (ImGuiFileDialog::Instance()->Display("ChooseImgLoc"))
+    {
+        if (ImGuiFileDialog::Instance()->IsOk())
+        {
+            imgLoader::load(ImGuiFileDialog::Instance()->GetFilePathName());
+            zmianaUstawien = true;
+        }
+        ImGuiFileDialog::Instance()->Close();
+    }
+
+    if (ImGuiFileDialog::Instance()->Display("ChooseSetSaveLoc"))
+    {
+        if (ImGuiFileDialog::Instance()->IsOk())
+        {
+            setting.setPath = ImGuiFileDialog::Instance()->GetFilePathName();
+            setting.saveSeting();
+        }
+        ImGuiFileDialog::Instance()->Close();
+    }
+
+    if (ImGuiFileDialog::Instance()->Display("ChooseSetLoc"))
+    {
+        if (ImGuiFileDialog::Instance()->IsOk())
+        {
+            setting.setPath = ImGuiFileDialog::Instance()->GetFilePathName();
+            setting.load(expandSeting);
+            zmianaUstawien = true;
+        }
+        ImGuiFileDialog::Instance()->Close();
+    }
+
+
     return zmianaUstawien;
 
     /// Save panel
