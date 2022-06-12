@@ -38,16 +38,14 @@ sf::Image cutingImg(sf::Image& img, int maxSize = 500)
 
 }
 int main() {
+
     ParalerWindow win;
+
     sf::RenderWindow window(sf::VideoMode(WINDOW_X, WINDOW_Y), "ImGui + SFML = <3");
     window.setFramerateLimit(60);
     ImGui::SFML::Init(window);
     sf::err().rdbuf(NULL);
-    /*sf::Clock clock;
-    sf::Time time = sf::Time::Zero;
-    unsigned int FPS = 0, frame_counter = 0;
-    sf::Text fps_text;*/ //fps counter part 1 (part 2 also must be uncommented to work)
-    
+
     //allocation of Img, Texture, Sprite and ResultImg
     sf::Image imgPrev;
     sf::Texture imgTex;
@@ -66,8 +64,16 @@ int main() {
         }
         ImGui::SFML::Update(window, deltaClock.restart());
 
+
+
+
+        // Loading pchoto and counting all color 
+        
+      
+
         //Checking user settings changes
         if (UserInterFace::RenderUi()) {
+            // kiedy jest zmiana zdj�cia
             if (imgLoader::loaded) {
                 imgLoader::loaded = 0;
                 imgPrevGray = imgPrev = cutingImg(imgLoader::img);
@@ -77,13 +83,14 @@ int main() {
                 baseLookSprite.setTexture(baseLookText);
                 baseLookSprite.setScale(sf::Vector2f(WINDOW_X / imgLoader::img.getSize().x, WINDOW_Y / imgLoader::img.getSize().y));
             }
+            // upewnienie sie ze zdjecie istnieje
+            // wyliczanie szarefo zdjecia
             if (imgPrevGray.getSize() != sf::Vector2u(0, 0)) {
                 ColorConverter::iterator(imgPrev, imgPrevGray, setting, expandSeting);
                 imgTex.loadFromImage(imgPrevGray);                                    // need to cut to the 500 px for prewiev  
                 imgSprite.setTexture(imgTex);
                 imgSprite.setScale(sf::Vector2f(WINDOW_X / imgPrev.getSize().x, WINDOW_Y / imgPrev.getSize().y));
             }
-
         }
 
         bool isHorizontal = false;
@@ -94,10 +101,11 @@ int main() {
             isHorizontal = windowScale > imgScale;
         }
 
+
         //drawing & scaling sprites
         window.clear();
-
         {
+
             sf::Sprite disp;
             float spriteScale = imgScale / windowScale;
 
@@ -124,9 +132,12 @@ int main() {
             window.setTitle(std::to_string(FPS));
         }
         frame_counter++;*/ //fps counter part 2 (part 1 also must be uncommented to work)
+
         ImGui::SFML::Render(window);
         window.display();
     }
     ImGui::SFML::Shutdown();
+
     win.checkTerminate();
 }
+
