@@ -1,11 +1,8 @@
 // OdcienieSzarosci.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
-
 #define SFML_Proj
-
 #include <imgui.h>
 #include "imgui-SFML.h"
-
 #include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Graphics/RenderStates.hpp>
@@ -19,7 +16,6 @@
 #include "ParalerWindow.h"
 #include "ColorConverter.h"
 #include "ImgLoader.h"
-
 #define WINDOW_X 1300.
 #define WINDOW_Y 600.
 
@@ -41,10 +37,10 @@ sf::Image cutingImg(sf::Image& img, int maxSize = 500)
     return small;
 
 }
-
 int main() {
-    //ParalerWindow win;
-    //bool forConverter{};
+
+    ParalerWindow win;
+
     sf::RenderWindow window(sf::VideoMode(WINDOW_X, WINDOW_Y), "ImGui + SFML = <3");
     window.setFramerateLimit(60);
     ImGui::SFML::Init(window);
@@ -52,93 +48,96 @@ int main() {
 
     //allocation of Img, Texture, Sprite and ResultImg
     sf::Image imgPrev;
-    //imgPrev.loadFromFile("zdj1.png");//*************(TO DO) getting std::string of location of file
-
     sf::Texture imgTex;
     sf::Sprite imgSprite;
     sf::Texture baseLookText;
     sf::Sprite baseLookSprite;
-
     sf::Image imgPrevGray;
-
     sf::Clock deltaClock;
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
             ImGui::SFML::ProcessEvent(window, event);
-
             if (event.type == sf::Event::Closed) {
                 window.close();
-            }
-            if (event.type == sf::Event::Resized)
-            {
-                sf::Vector2u ss = window.getSize();
-                sf::Vector2f s = sf::Vector2<float>(ss);
-                double co = ((s.x - 00) / imgPrev.getSize().x < (s.y / imgLoader::img.getSize().y)) ? (s.x - 00) / imgLoader::img.getSize().x : s.y / imgLoader::img.getSize().y;
-                baseLookSprite.setScale(sf::Vector2f(co, co));
-                co = ((s.x - 00) / imgPrev.getSize().x < (s.y / imgPrev.getSize().y)) ? (s.x - 00) / imgPrev.getSize().x : s.y / imgPrev.getSize().y;
-                imgSprite.setScale(sf::Vector2f(co, co));
             }
         }
         ImGui::SFML::Update(window, deltaClock.restart());
 
 
 
+
         // Loading pchoto and counting all color 
         
       
+
         //Checking user settings changes
         if (UserInterFace::RenderUi()) {
-            // kiedy jest zmiana zdjêcia
+            // kiedy jest zmiana zdjï¿½cia
             if (imgLoader::loaded) {
                 imgLoader::loaded = 0;
                 imgPrevGray = imgPrev = cutingImg(imgLoader::img);
 
-                //window.setSize(imgLoader::img.getSize());
-                baseLookText.loadFromImage(imgLoader::img);// orginal photo show not cutted one !!!!!
+                baseLookText.loadFromImage(imgLoader::img);
                 baseLookSprite = sf::Sprite();
                 baseLookSprite.setTexture(baseLookText);
-                sf::Vector2u ss = window.getSize();
-                sf::Vector2f s = sf::Vector2<float>(ss);
-                double co = ((s.x) / imgPrev.getSize().x < (s.y / imgLoader::img.getSize().y)) ? (s.x) / imgLoader::img.getSize().x : s.y / imgLoader::img.getSize().y;
-                baseLookSprite.setScale(sf::Vector2f(co, co));
-                //forConverter = 1;
+                baseLookSprite.setScale(sf::Vector2f(WINDOW_X / imgLoader::img.getSize().x, WINDOW_Y / imgLoader::img.getSize().y));
             }
             // upewnienie sie ze zdjecie istnieje
             // wyliczanie szarefo zdjecia
             if (imgPrevGray.getSize() != sf::Vector2u(0, 0)) {
-                ColorConverter::iterator(imgPrev, imgPrevGray, setting, expandSeting);//transforming in full scale 
+                ColorConverter::iterator(imgPrev, imgPrevGray, setting, expandSeting);
                 imgTex.loadFromImage(imgPrevGray);                                    // need to cut to the 500 px for prewiev  
                 imgSprite.setTexture(imgTex);
-                sf::Vector2u ss = window.getSize();
-                sf::Vector2f s = sf::Vector2<float>(ss);
-                double co = ((s.x - 00) / imgPrev.getSize().x < (s.y / imgPrev.getSize().y)) ? (s.x - 00) / imgPrev.getSize().x : s.y / imgPrev.getSize().y;
-                imgSprite.setScale(sf::Vector2f(co, co));
+                imgSprite.setScale(sf::Vector2f(WINDOW_X / imgPrev.getSize().x, WINDOW_Y / imgPrev.getSize().y));
             }
+        }
+
+        bool isHorizontal = false;
+        float windowScale = (float)window.getSize().x / window.getSize().y;
+        float imgScale = 1;
+        if (imgLoader::img.getSize().y != 0) {
+            imgScale = (float)imgPrev.getSize().x / imgPrev.getSize().y;
+            isHorizontal = windowScale > imgScale;
         }
 
 
         //drawing & scaling sprites
         window.clear();
         {
-            sf::Sprite* disp;
+
+            sf::Sprite disp;
+            float spriteScale = imgScale / windowScale;
+
             if (setting.preView)
             {
-                disp = &imgSprite;
+                disp = imgSprite;
             }
             else
             {
-                disp = &baseLookSprite;
+                disp = baseLookSprite;
             }
-            window.draw(*disp);
-        }
+            if (isHorizontal) disp.scale(spriteScale, 1);
+            else disp.scale(1, 1 / spriteScale);
 
+
+            window.draw(disp);
+        }
+        
+        /*if (clock.getElapsedTime().asSeconds() >= 1.0f)
+        {
+            FPS = (unsigned int)((float)frame_counter / clock.getElapsedTime().asSeconds());
+            clock.restart();
+            frame_counter = 0;
+            window.setTitle(std::to_string(FPS));
+        }
+        frame_counter++;*/ //fps counter part 2 (part 1 also must be uncommented to work)
 
         ImGui::SFML::Render(window);
         window.display();
     }
-
     ImGui::SFML::Shutdown();
-    //win.checkTerminate();
+
+    win.checkTerminate();
 }
 

@@ -25,7 +25,7 @@ bool ColorConverter::iterator(sf::Image& org, sf::Image& output, Settings& st, E
 	return false;
 }
 
-bool ColorConverter::SaveConvImage(sf::Image org, Settings& st, ExpandSeting& exSt)
+bool ColorConverter::SaveConvImage(sf::Image org, Settings& st, ExpandSeting& exSt, std::string path)
 {
 	sf::Image res(org);
 	if (!iterator(org, res, st, exSt))
@@ -36,9 +36,9 @@ bool ColorConverter::SaveConvImage(sf::Image org, Settings& st, ExpandSeting& ex
 	}
 	std::cout << "successfully generated mono_image, \nstarted saving to file (might take up to 10s)" << std::endl;
 	
-	if (res.saveToFile(std::string(st.sciezka) + "_mono." + st.items[st.rozszerzenie]))
+	if (res.saveToFile(path))
 	{
-		std::cout << "saved to :" << std::string(st.sciezka) + "_mono." + st.items[st.rozszerzenie] << "\nSUCCESS!!!" << std::endl;
+		std::cout << "saved to :" << path << "\nSUCCESS!!!" << std::endl;
 		return true;
 	}
 	else

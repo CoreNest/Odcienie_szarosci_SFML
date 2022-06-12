@@ -57,20 +57,20 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_static|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -109,15 +109,18 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>D:\Programownaie\imgui;D:\Programownaie\imGUI-SFML;$(IncludePath)</IncludePath>
+    <IncludePath>D:\Programownaie\imgui;D:\Programownaie\imGUI-SFML;.\lib\ImGuiFileDialog-Lib_Only;$(IncludePath)</IncludePath>
+    <LibraryPath>.\lib\ImGuiFileDialog-Lib_Only;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>D:\Programownaie\imgui;D:\Programownaie\imGUI-SFML;$(IncludePath)</IncludePath>
+    <IncludePath>.\lib\ImGuiFileDialog-Lib_Only;D:\Programownaie\imgui;D:\Programownaie\imGUI-SFML;$(IncludePath)</IncludePath>
+    <LibraryPath>.\lib\ImGuiFileDialog-Lib_Only;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release_static|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>D:\Programownaie\imgui;D:\Programownaie\imGUI-SFML;$(IncludePath)</IncludePath>
+    <IncludePath>.\lib\ImGuiFileDialog-Lib_Only;D:\Programownaie\imgui;D:\Programownaie\imGUI-SFML;$(IncludePath)</IncludePath>
+    <LibraryPath>.\lib\ImGuiFileDialog-Lib_Only;$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -180,7 +183,7 @@
       </PrecompiledHeaderFile>
       <Optimization>Disabled</Optimization>
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
-      <AdditionalIncludeDirectories>D:\Programownaie\SFML-2.5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\Programownaie\SFML-2.5.1\include;.\lib\ImGuiFileDialog-Lib_Only;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <IntrinsicFunctions>false</IntrinsicFunctions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <OpenMPSupport>true</OpenMPSupport>
@@ -189,7 +192,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>sfml-graphics-d.lib;sfml-window-d.lib;sfml-system-d.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>D:\Programownaie\SFML-2.5.1\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\Programownaie\SFML-2.5.1\lib;.\lib\ImGuiFileDialog-Lib_Only;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -247,6 +250,7 @@
     <ClCompile Include="..\..\..\..\imgui\imgui_widgets.cpp" />
     <ClCompile Include="..\..\..\..\imgui\misc\cpp\imgui_stdlib.cpp" />
     <ClCompile Include="ColorConverter.cpp" />
+    <ClCompile Include="lib\ImGuiFileDialog-Lib_Only\ImGuiFileDialog.cpp" />
     <ClCompile Include="OdcienieSzarosci.cpp" />
     <ClCompile Include="ParalerWindow.cpp" />
     <ClCompile Include="Setting.cpp" />
@@ -256,6 +260,8 @@
   <ItemGroup>
     <ClInclude Include="ColorConverter.h" />
     <ClInclude Include="ImgLoader.h" />
+    <ClInclude Include="lib\ImGuiFileDialog-Lib_Only\ImGuiFileDialog.h" />
+    <ClInclude Include="lib\ImGuiFileDialog-Lib_Only\ImGuiFileDialogConfig.h" />
     <ClInclude Include="ParalerWindow.h" />
     <ClInclude Include="Setting.h" />
     <ClInclude Include="Slider.h" />
